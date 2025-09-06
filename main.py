@@ -7,7 +7,7 @@ import io
 import base64
 
 OLLAMA_URL = "http://localhost:11434/api/generate"  # default Ollama endpoint
-MODEL = "llava"  # multimodal model in Ollama
+MODEL = "gemma3:latest"  # multimodal model in Ollama
 
 def extract_text_from_pdf(pdf_path):
     """Extracts text from PDF, using OCR if page is scanned."""
