@@ -7,7 +7,7 @@ import io
 import base64
 
 OLLAMA_URL = "http://localhost:11434/api/generate"  # default Ollama endpoint
-MODEL = "gemma3:latest"  # multimodal model in Ollama
+MODEL = "gemma3:12b"  # multimodal model in Ollama
 
 def extract_text_from_pdf(pdf_path):
     """Extracts text from PDF, using OCR if page is scanned."""
@@ -51,11 +51,12 @@ def summarize_component(pdf_path):
 
     prompt = f"""
 You are an expert electronics engineer.
-Write a ONLY ONE ENGLISH SENTENCE extract of the part described in this document. Focus on most important parameters.
-Format the output to be only the necessary data, avoid any extra text. Avoid repetition.
-Where possible give data in format: "Parameter ValueUnit" 
+Write a ONLY ONE line (up to 512 characters) extract of the part described in this document. 
+Say what the component is and focus on most important numeric parameters.
+ IT does not have to be a grammatically correct sentence.
+avoid any extra text. Avoid repetition.
 Do not add description of component functioning.
-At the end, translate the output to english if in other language.
+If its in any language other than english, translate it to English.
 The output CANNOT INCLUDE ANY OTHER LANGUAGES THAN ENGLISH.
 Datasheet content:
 {text[:4000]}  # keep within context size
@@ -64,12 +65,12 @@ Datasheet content:
 
 
 if __name__ == "__main__":
-    pdf_file = "examples/datasheet2.pdf"
+    pdf_file = "examples/datasheet1.pdf"
     summary = summarize_component(pdf_file)
     print(summary)
-    out = query_ollama("translate this to english if its in any other language: " + summary)
+    # out = query_ollama("translate this to english if its in any other language: " + summary)
 
-    print("Summary:", out)
+    # print("Summary:", out)
 
     # Example of also analyzing a diagram image:
     # diagram_summary = query_ollama("Describe the component pinout", image_path="pinout.png")
